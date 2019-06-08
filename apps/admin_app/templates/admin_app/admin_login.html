@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'admin_app/style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="row">
+                <div class="col-4">
+                    <img src="/static/store/img/logo.png" alt="snowboard">
+                </div>
+                <div id="header-right" class="col-5">
+                    <h3 class="login-note">Admin Portal Login</h3>
+                </div>
+                <div id="header-right" class="col-3">
+                        <a href="/"> <button class="btn btn-secondary login-note">Home</button></a>
+                    </div>
+            </div>
+        </div>
+        <div id="second-row" class="row">
+            <div class="col-sm left-side">
+                <div class="left-row">
+
+                    <form action="/admin/login_admin" class="form-inline" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group mb-2">
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="exampleInputEmail1">Email:</label>
+                            <input type="text" class="form-control" name="email">
+                            {% if messages %}
+                            {% for message in messages %}
+                            {% if message.extra_tags == "login_email_one" %}
+                            <ul>
+                                <li class="message">{{ message }}</li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mx-sm-3 mb-2 col-xs-4">
+                            <label for="input_password">Password:</label>
+                            <input type="password" class="form-control" name="password">
+                            {% if messages %}
+                            {% for message in messages %}
+                            {% if message.extra_tags == "login_password_one" %}
+                            <ul>
+                                <li class="message">{{ message }}</li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-auto my-1">
+                            <button type="submit" class="btn btn-secondary">Login</button>
+                            {% if messages %}
+                            {% for message in messages %}
+                            {% if message.extra_tags == "login_failed_one" %}
+                            <ul>
+                                <li class="message">{{ message }}</li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+
+                            {% if messages %}
+                            {% for message in messages %}
+                            {% if message.extra_tags == "login_failed_two" %}
+                            <ul>
+                                <li class="message">{{ message }}</li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

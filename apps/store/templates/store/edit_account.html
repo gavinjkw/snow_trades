@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'store/style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="row">
+                <div class="col-6">
+                    <img src="/static/store/img/logo3.png" alt="snowboard">
+                </div>
+                <div id="nav-section" class="col-6">
+                    <nav class="navbar navbar-expand-lg" >
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/home">Home</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/cart">Cart ({{cart_count}})</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/account">My Account</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/logout">Logout</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <p class="nav-link bold"> Welcome, {{request.session.first_name}}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div id="second-row" class="row">
+            <div id="navigation" class="col-2">
+                <div class="col">
+                    <p></p>
+                    <a href="/account" id="edit_button" class="myButton">My Listings</a>
+                    <p></p>
+                    <a href="/add_item" class="myButton">Add Item</a>
+                    <p></p>
+
+                </div>
+                <div class="col">
+
+                    <a href="/snowboards"> <img class="nav-picture" src="/static/store/img/snowboard.png" height=110px
+                            width=110px alt="snowboard"></a>
+                    <p class="white">Snowboards</p>
+                </div>
+                <div class="col">
+
+                    <a href="/skiis"> <img class="nav-picture" src="/static/store/img/skiis.png" height=110px
+                            width=110px alt="skiis"></a>
+                    <p class="white">Skiis</p>
+                </div>
+
+                <div class="col">
+
+                    <a href="/boots"> <img class="nav-picture" src="/static/store/img/boot.png" height=110px width=110px
+                            alt="snowboard"></a>
+                    <p class="white">Boots</p>
+                </div>
+                <div class="col">
+                    <a href="/bindings"> <img class="nav-picture" src="/static/store/img/binding.png" height=110px
+                            width=110px alt="snowboard"></a>
+                    <p class="white">Bindings</p>
+                </div>
+                <div class="col">
+                    <a href="/apparel"> <img class="nav-picture" src="/static/store/img/jacket.png" height=110px
+                            width=110px alt="apparel"></a>
+                    <p class="white">Apparel</p>
+                </div>
+            </div>
+
+            <div id="main" class="col-10">
+
+                <h4>Edit My Account </h4>
+                <form action="/edit_user_process" method="POST" id="indiv-item">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="first_name">First Name:</label>
+                        <input type="text" name="first_name" value="{{user.first_name}}">
+                        {% if messages %}
+                        {% for message in messages %}
+                        {% if message.extra_tags == "first_name" %}
+                        <ul>
+                            <li class="message">{{ message }}</li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" name="last_name" value="{{user.last_name}}">
+                        {% if messages %}
+                        {% for message in messages %}
+                        {% if message.extra_tags == "last_name" %}
+                        <ul>
+                            <li class="message">{{ message }}</li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="text" name="email" value="{{user.email}}">
+                        {% if messages %}
+                        {% for message in messages %}
+                        {% if message.extra_tags == "email_duplicate" %}
+                        <ul>
+                            <li class="message">{{ message }}</li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        {% if messages %}
+                        {% for message in messages %}
+                        {% if message.extra_tags == "edit_email" %}
+                        <ul>
+                            <li class="message">{{ message }}</li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <input type="hidden" name="user_actual_email" value="{{request.session.email}}">
+                    <button class="btn btn-secondary" type="submit">Update</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+
+</html>

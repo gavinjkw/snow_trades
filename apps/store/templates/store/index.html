@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'store/style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div class="container">
+            <div class="header">
+                    <div class="row">
+                        <div class="col-4">
+                            <img src="/static/store/img/logo3.png" alt="snowboard">
+                        </div>
+                        <div id="header-right" class="col-8">
+                            <form action="/login" class="form-inline" method="POST">
+                                {% csrf_token %}
+                                
+                                <div class="form-group mb-2">
+                                    <label for="exampleInputEmail1">Email:</label>
+                                    <input type="text" class="form-control" name="email">
+                                    {% if messages %}
+                                    {% for message in messages %}
+                                    {% if message.extra_tags == "login_email_one" %}
+                                    <ul>
+                                        <li class="message">{{ message }}</li>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-group mx-sm-3 mb-2 col-xs-4">
+                                    <label for="input_password">Password:</label>
+                                    <input type="password" class="form-control" name="password">
+                                    {% if messages %}
+                                    {% for message in messages %}
+                                    {% if message.extra_tags == "login_password_one" %}
+                                    <ul>
+                                        <li class="message">{{ message }}</li>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-auto my-1">
+                                    <button type="submit" class="btn btn-secondary">Login</button>
+                                    {% if messages %}
+                                    {% for message in messages %}
+                                    {% if message.extra_tags == "login_failed_one" %}
+                                    <ul>
+                                        <li class="message">{{ message }}</li>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+        <div id="second-row" class="row">
+            <div class="col-sm left-side">
+                <div class="left-row">
+                    <h3>Create an Account</h3>
+                    <form action="/process_reg" method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="first_name">First Name: </label>
+                            <input type="first_name" class="form-control" name="first_name">
+                            {% if messages %}
+                            {% for message in messages %}
+                            {% if message.extra_tags == "first_name" %}
+                            <ul>
+                                <li class="message">{{ message }}</li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="last_name">Last Name: </label>
+                            <input type="last_name" class="form-control" name="last_name">
+                            {% if messages %}
+                            {% for message in messages %}
+                            {% if message.extra_tags == "last_name" %}
+                            <ul>
+                                <li class="message">{{ message }}</li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+
+                        
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Email address</label>
+                                <input type="text" class="form-control" name="email">
+                                {% if messages %}
+                                {% for message in messages %}
+                                {% if message.extra_tags == "email" %}
+                                <ul>
+                                    <li class="message">{{ message }}</li>
+                                    {% endif %}
+                                    {% if message.extra_tags == "duplicate_email" %}
+                                    <ul>
+                                        <li class="message">{{ message }}</li>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="input_password">Password:</label>
+                                <input type="password" class="form-control" name="password">
+                                {% if messages %}
+                                {% for message in messages %}
+                                {% if message.extra_tags == "password" %}
+                                <ul>
+                                    <li class="message">{{ message }}</li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label for="inputpassword">Confirm Password:</label>
+                                <input type="password" class="form-control" name="confirm_password">
+                            </div>
+                            <button type="submit" class="btn btn-secondary">Register</button>
+                    </form>
+                </div>
+            </div>
+            <div id="left-login" class="col-sm">
+                <div class="main-info">
+                    <h3>Buy and sell new and used snow equipment</h3>
+
+                    <div class="row">
+                        <div class="col">Snowboards
+                            <img src="/static/store/img/snowboard.png" height=100px width=100px alt="snowboard">
+                        </div>
+                        <div class="col">Skiis
+                            <img src="/static/store/img/skiis.png" height=90px width=90px alt="skiis">
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">Boots
+                            <img src="/static/store/img/boot.png" height=100px width=100px alt="snowboard">
+                        </div>
+                        <div class="col">Bindings
+                            <img src="/static/store/img/binding.png" height=100px width=100px alt="snowboard">
+                        </div>
+                    </div>
+                    <hr>
+                    <p>Find great deals on snow equipment or sell your extra items. Snow Trades is your number one stop for snow related gear. Sign up today! </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'admin_app/style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="row">
+                <div class="col-5">
+                    <img src="/static/store/img/logo3.png" alt="snowboard">
+                </div>
+                <div class="col-2 center">
+                    <h3 class="center">Admin Portal</h3>
+
+                </div>
+                <div id="nav-section" class="col-5">
+                    <nav class="navbar navbar-expand-lg">
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/messages">Messages</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/admin/logout">Logout</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/admin/orders">Orders</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/admin/items">Items</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/admin/users">Users</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div id="second-row" class="row">
+
+            <div id="navigation" class="col-3">
+                <h5>Total Items: {{item_count}}</h5>
+                <p></p>
+                <h5>Total Orders: {{order_count}}</h5>
+                <p></p>
+                <h5>Total Users: {{user_count}}</h5>
+                <p></p>
+                <h5>Orders in last 24 Hours: {{24hr_order}}
+                </h5>
+                <p></p>
+                <h5>Orders in last 7 days: {{7_day_order}}
+                </h5>
+            </div>
+
+            <div id="main" class="col-9">
+                {% if request.session.state == 0 %}
+                <h3>Orders</h3>
+                {% for order in orders %}
+                <hr>
+                <div class="row">
+                    <div class="col-sm">
+                        <p>Buyer: {{order.buyer.first_name}} {{order.buyer.last_name}}</p>
+                        <p>Seller: {{order.seller.first_name}} {{order.seller.last_name}}</p>
+                        <p>Total Price: {{order.total_price}}</p>
+                        <form action="/admin/delete_order" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="order_id" value="{{order.id}}">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                    <div class="col-sm">
+
+                        <p>Items: 
+                            {% for item in order.items.all %}
+                            Make: {{item.make}} Model: {{item.model}} Price: ${{item.price}};
+                            {% endfor %}
+                        </p>
+                        <p>Payment Status: {{order.payment_status}}</p>
+                        <p>Charge ID: {{order.charge_id}}</p>
+
+                    </div>
+                </div>
+
+                {% endfor %}
+                {% endif %}
+
+                {% if request.session.state == 1 %}
+                <h3>Items</h3>
+                {% for item in items %}
+                <hr>
+                <div class="row">
+
+                    <div class="col-sm">
+                        <p>Make: {{item.make}}</p>
+                        <p>Model: {{item.model}}</p>
+                        <p>Size: {{item.size}}</p>
+                        <p>Price: ${{item.price}}</p>
+                        <p>Added By: {{item.added_by.first_name}} {{item.added_by.last_name}}</p>
+                        <p>{{item.added_by}}</p>
+                        <form action="/admin/delete_item" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{item.id}}">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                    <div class="col-sm">
+                        Description: {{item.desc}}
+                    </div>
+                    <div class="col-sm">
+                        <img src="/media/{{item.image_one}}" alt="item">
+                    </div>
+                </div>
+
+                {% endfor %}
+                {% endif %}
+
+                {% if request.session.state == 2 %}
+                <h3>Items</h3>
+                {% for user in users %}
+                <hr>
+                <div class="row">
+
+                    <div class="col-sm">
+                        <p>First Name: {{user.first_name}}</p>
+                        <p>Last Name: {{user.last_name}}</p>
+                        <p>Email: {{user.email}}</p>
+                        <p>Access Level: {{user.access_level}}</p>
+                        <form action="/admin/delete_user" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{user.id}}">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'store/style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="row">
+                <div class="col-6">
+                    <img src="/static/store/img/logo3.png" alt="snowboard">
+                </div>
+                <div id="nav-section" class="col-6">
+                    <nav class="navbar navbar-expand-lg">
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/home">Home</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/cart">Cart ({{cart_count}})</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/account">My Account</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/logout">Logout</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <p class="nav-link bold"> Welcome, {{request.session.first_name}}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div id="second-row" class="row">
+            <div id="navigation" class="col-2">
+                <div class="col">
+                    <p></p>
+                    <a href="/add_item" class="myButton ">Add Item</a>
+                    <p></p>
+                </div>
+                <div class="col">
+
+                    <a href="/snowboards"> <img class="nav-picture" src="/static/store/img/snowboard.png" height=110px
+                            width=110px alt="snowboard"></a>
+                    <p class="white">Snowboards</p>
+                </div>
+                <div class="col">
+
+                    <a href="/skiis"> <img class="nav-picture" src="/static/store/img/skiis.png" height=110px
+                            width=110px alt="skiis"></a>
+                    <p class="white">Skiis</p>
+                </div>
+
+                <div class="col">
+
+                    <a href="/boots"> <img class="nav-picture" src="/static/store/img/boot.png" height=110px width=110px
+                            alt="snowboard"></a>
+                    <p class="white">Boots</p>
+                </div>
+                <div class="col">
+                    <a href="/bindings"> <img class="nav-picture" src="/static/store/img/binding.png" height=110px
+                            width=110px alt="snowboard"></a>
+                    <p class="white">Bindings</p>
+                </div>
+                <div class="col">
+                    <a href="/apparel"> <img class="nav-picture" src="/static/store/img/jacket.png" height=110px
+                            width=110px alt="apparel"></a>
+                    <p class="white">Apparel</p>
+                </div>
+            </div>
+
+            <div id="main" class="col-10">
+
+                {% if request.session.item_state == 0 %}
+                <h3 class="middle">Recent Listings</h3>
+                <hr>
+                {% endif %}
+
+                {% if request.session.item_state == 1 %}
+                <h3 class="middle">Snowboards</h3>
+                <hr>
+                {% endif %}
+
+                {% if request.session.item_state == 2 %}
+                <h3 class="middle">Skiis</h3>
+                <hr>
+                {% endif %}
+
+                {% if request.session.item_state == 3 %}
+                <h3 class="middle">Boots</h3>
+                <hr>
+                {% endif %}
+
+                {% if request.session.item_state == 4 %}
+                <h3 class="middle">Bindings</h3>
+                <hr>
+                {% endif %}
+
+                {% if request.session.item_state == 5 %}
+                <h3 class="middle">Apparel</h3>
+                <hr>
+                {% endif %}
+
+                {% for item in items %}
+                {% if item.image_two != "item_pictures/None/no-img.jpg" and item.image_three != "item_pictures/None/no-img.jpg" %}
+                <div class="row" id="indiv-item">
+                    <div class="col-sm">
+                        <p>Make: {{item.make}}</p>
+                        <p>Model: {{item.model}}</p>
+                        <p>Size: {{item.size}}</p>
+                        <p>Price: ${{item.price}}</p>
+                        <p>Added By: {{item.added_by.first_name}} {{item.added_by.last_name}}</p>
+                        <form action="/add_cart_process" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{item.id}}">
+                            <button type="submit" class="btn btn-secondary">Add to Cart</button>
+                        </form>
+                    </div>
+                    <div class="col-sm">
+                        Description: {{item.desc}}
+                    </div>
+                    <div class="col-sm">
+                        <div id="carousel-{{item.id}}" class="carousel slide" data-ride="carousel"
+                            data-interval="false">
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel-{{item.id}}" data-slide-to="0" class="active"></li>
+                                <li data-target="#carousel-{{item.id}}" data-slide-to="1"></li>
+                                <li data-target="#carousel-{{item.id}}" data-slide-to="2"></li>
+                            </ol>
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img class="d-block w-100" src="/media/{{item.image_one}}" alt="First slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="/media/{{item.image_two}}" alt="Second slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="/media/{{item.image_three}}" alt="Third slide">
+                                </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#carousel-{{item.id}}" role="button"
+                                data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carousel-{{item.id}}" role="button"
+                                data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                {% endif %}
+
+                {% if item.image_two != "item_pictures/None/no-img.jpg" and item.image_three == "item_pictures/None/no-img.jpg" %}
+                <div class="row" id="indiv-item">
+                    <div class="col-sm">
+                        <p>Make: {{item.make}}</p>
+                        <p>Model: {{item.model}}</p>
+                        <p>Size: {{item.size}}</p>
+                        <p>Price: ${{item.price}}</p>
+                        <p>Added By: {{item.added_by.first_name}} {{item.added_by.last_name}}</p>
+                        <form action="/add_cart_process" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{item.id}}">
+                            <button type="submit" class="btn btn-secondary">Add to Cart</button>
+                        </form>
+                    </div>
+                    <div class="col-sm">
+                        Description: {{item.desc}}
+
+                    </div>
+                    <div class="col-sm">
+                        <div id="carousel-{{item.id}}" class="carousel slide" data-ride="carousel"
+                            data-interval="false">
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel-{{item.id}}" data-slide-to="0" class="active"></li>
+                                <li data-target="#carousel-{{item.id}}" data-slide-to="1"></li>
+                            </ol>
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img class="d-block w-100" src="/media/{{item.image_one}}" alt="First slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="/media/{{item.image_two}}" alt="Second slide">
+                                </div>
+
+                            </div>
+                            <a class="carousel-control-prev" href="#carousel-{{item.id}}" role="button"
+                                data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carousel-{{item.id}}" role="button"
+                                data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                {% endif %}
+
+                {% if item.image_two == "item_pictures/None/no-img.jpg" and item.image_three == "item_pictures/None/no-img.jpg" %}
+                <div class="row" id="indiv-item">
+                    <div class="col-sm">
+                        <p>Make: {{item.make}}</p>
+                        <p>Model: {{item.model}}</p>
+                        <p>Size: {{item.size}}</p>
+                        <p>Price: ${{item.price}}</p>
+                        <p>Added By: {{item.added_by.first_name}} {{item.added_by.last_name}}</p>
+                        <form action="/add_cart_process" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{item.id}}">
+                            <button type="submit" class="btn btn-secondary">Add to Cart</button>
+                        </form>
+                    </div>
+                    <div class="col-sm">
+                        Description: {{item.desc}}
+                    </div>
+                    <div class="col-sm">
+                        <img class="d-block w-100" src="/media/{{item.image_one}}" alt="First slide">
+                    </div>
+                </div>
+                <hr>
+                {% endif %}
+                {% endfor %}
+
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if items.has_previous %}
+                        <a href="?page={{ items.previous_page_number }}">previous</a>
+                        {% endif %}
+
+                        <span class="current">
+                            Page {{ items.number }} of {{ items.paginator.num_pages }}.
+                        </span>
+
+                        {% if items.has_next %}
+                        <a href="?page={{ items.next_page_number }}">next</a>
+                        {% endif %}
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+
+</html>
