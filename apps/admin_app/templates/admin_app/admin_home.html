@@ -130,7 +130,7 @@
                 {% endif %}
 
                 {% if request.session.state == 2 %}
-                <h3>Items</h3>
+                <h3>Users</h3>
                 {% for user in users %}
                 <hr>
                 <div class="row">
@@ -142,7 +142,7 @@
                         <p>Access Level: {{user.access_level}}</p>
                         <form action="/admin/delete_user" method="POST">
                             {% csrf_token %}
-                            <input type="hidden" name="item_id" value="{{user.id}}">
+                            <input type="hidden" name="user_id" value="{{user.id}}">
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </div>

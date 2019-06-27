@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'orders$', views.orders),
     url(r'delete_item$', views.delete_item),
     url(r'delete_order$', views.delete_order),
+    url(r'delete_user$', views.delete_user),
 ]

@@ -76,6 +76,6 @@ def delete_order(request):
     return redirect ('/admin/home')
 
 def delete_user(request):
-    order = Order.objects.get(id = request.POST['order_id'])
-    order.delete()
+    user = User.objects.get(id = request.POST['user_id'])
+    user.delete()
     return redirect ('/admin/home')

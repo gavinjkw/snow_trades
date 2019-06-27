@@ -2,7 +2,7 @@ from django.conf.urls import url
 from . import views
                     
 urlpatterns = [
-    url(r'^$', views.landing),
+    url(r'^$', views.index),
     url(r'^register$', views.index),
     url(r'^store$', views.login),
     url(r'^process_reg$', views.process_reg),

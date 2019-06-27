@@ -65,7 +65,7 @@ def login(request):
                 category='snowboard').order_by('-created_at')
         if request.session['item_state'] == 2:
             recent_items = Item.objects.filter(
-                category='Skiis').order_by('-created_at')
+                category='Skii').order_by('-created_at')
         if request.session['item_state'] == 3:
             recent_items = Item.objects.filter(
                 category='Boots').order_by('-created_at')
